@@ -12,6 +12,7 @@
       <ion-title size="large">Test Capacitor</ion-title>
     </ion-toolbar>
   </ion-header>
+
   <ion-card>
     <ion-card-header>
       <ion-card-title>
@@ -21,17 +22,18 @@
     <ion-card-content>
       <ion-list>
         <ion-item>
-          Platform name:
+          Platform name: {{ptfName}}
         </ion-item>
         <ion-item>
-          Native platform?
+          Native platform? {{isNative ? 'Yes' : 'No'}}
         </ion-item>
         <ion-item>
-          Camera Available?
+          Camera Available? {{isAvailable ? 'Yes' : 'No'}}
         </ion-item>
       </ion-list>
     </ion-card-content>
   </ion-card>
+
   <ion-card>
     <ion-card-header>
       <ion-card-title>
@@ -41,29 +43,27 @@
     <ion-card-content>
       <ion-list>
         <ion-item>
-          Name:
+          Name: {{name}}
         </ion-item>
         <ion-item>
-          Operating System:
+          Operating System: {{OS}}
         </ion-item>
         <ion-item>
-          OS version:
+          OS version: {{OSversion}}
         </ion-item>
         <ion-item>
-          OS version:
+          Manufacturer: {{manufacturer}}
         </ion-item>
         <ion-item>
-          Manufacturer
+          Is virtual? {{isVirtual ? 'Yes' : 'No'}}
         </ion-item>
         <ion-item>
-          Is virtual?
-        </ion-item>
-        <ion-item>
-          UUID:
+          UUID: {{UUID}}
         </ion-item>
       </ion-list>
     </ion-card-content>
   </ion-card>
+
   <ion-card>
     <ion-card-header>
       <ion-card-title>
@@ -73,12 +73,47 @@
     <ion-card-content>
       <ion-list>
         <ion-item>
-          Battery Level:
+          Battery Level: {{batteryLevel}}
         </ion-item>
         <ion-item>
-          Is charging?
+          Is charging? {{isCharging ? 'Yes' : 'No'}}
         </ion-item>
       </ion-list>
     </ion-card-content>
   </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>
+        Network info
+      </ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <ion-item>
+          Is connected? {{isConnected ? 'Yes' : 'No'}}
+        </ion-item>
+        <ion-item>
+          Connection Type: {{connectionType}}
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>
+        Events log
+      </ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <ion-item *ngFor="let log of eventLog">
+          {{ log }}
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
 </ion-content>
+
