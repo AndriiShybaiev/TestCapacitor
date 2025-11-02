@@ -115,5 +115,45 @@
     </ion-card-content>
   </ion-card>
 
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Geolocation Optional task</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <ion-item>
+          Permission: {{ geolocationStatus }}
+        </ion-item>
+        <ng-container *ngIf="geolocationStatus === 'granted'">
+          <ion-item>
+            Latitude: {{ latitude | number : '1.5-5' }}
+          </ion-item>
+          <ion-item>
+            Longitude: {{ longitude | number : '1.5-5' }}
+          </ion-item>
+        </ng-container>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Accelerometer Optional task</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <ion-item>
+          X: {{ accelX | number : '1.2-2' }}
+        </ion-item>
+        <ion-item>
+          Y: {{ accelY | number : '1.2-2' }}
+        </ion-item>
+        <ion-item>
+          Z: {{ accelZ | number : '1.2-2' }}
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
 </ion-content>
 

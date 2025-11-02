@@ -4,6 +4,9 @@ import { Device, DeviceId, BatteryInfo } from '@capacitor/device';
 import { App } from '@capacitor/app';
 import { Network, ConnectionStatus } from '@capacitor/network';
 
+import { Geolocation, PermissionStatus, Position } from '@capacitor/geolocation';
+import { Motion, AccelListenerEvent} from '@capacitor/motion';
+
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
@@ -31,7 +34,15 @@ export class HomePage implements OnInit, OnDestroy {
 
   public eventLog: string[] = [];
 
-  constructor(private ngZone: NgZone) { // 1. Внедряем NgZone
+  public geolocationStatus: string = 'Checking...';
+  public latitude: number | undefined;
+  public longitude: number | undefined;
+
+  public accelX: number | undefined;
+  public accelY: number | undefined;
+  public accelZ: number | undefined;
+
+  constructor(private ngZone: NgZone) {
     this.ptfName = Capacitor.getPlatform();
     this.isNative = Capacitor.isNativePlatform();
     this.isAvailable = Capacitor.isPluginAvailable('Camera');
@@ -56,6 +67,29 @@ export class HomePage implements OnInit, OnDestroy {
     this.connectionType = networkStatus.connectionType;
 
     this.setupListeners();
+
+    this.loadGeolocationData();
+  }
+
+  async loadGeolocationData() {
+    try {
+      const permStatus: PermissionStatus = await Geolocation.requestPermissions();
+      this.ngZone.run(() => {
+        this.geolocationStatus = permStatus.location;
+      });
+
+      if (permStatus.location === 'granted') {
+        const pos: Position = await Geolocation.getCurrentPosition();
+        this.ngZone.run(() => {
+          this.latitude = pos.coords.latitude;
+          this.longitude = pos.coords.longitude;
+        });
+      }
+    } catch (e: any) {
+      this.ngZone.run(() => {
+        this.geolocationStatus = `Error: ${e.message}`;
+      });
+    }
   }
 
   setupListeners() {
@@ -83,6 +117,14 @@ export class HomePage implements OnInit, OnDestroy {
         this.isConnected = status.connected;
         this.connectionType = status.connectionType;
         this.eventLog.push(`Cambio tipo conexión a ${status.connectionType}`);
+      });
+    });
+
+    Motion.addListener('accel', (event: AccelListenerEvent) => {
+      this.ngZone.run(() => {
+        this.accelX = event.acceleration.x;
+        this.accelY = event.acceleration.y;
+        this.accelZ = event.acceleration.z;
       });
     });
   }
